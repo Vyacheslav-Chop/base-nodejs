@@ -10,23 +10,19 @@ import {
 } from '../controllers/students.js';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 import { validateBody } from '../middlewares/validateBody.js';
-import {
-  createStudentSchema,
-  updateStudentSchema,
-} from '../validation/students.js';
-import { isValid } from '../middlewares/isValidId.js';
+import { createStudentSchema } from '../validation/createStudentSchema.js';
+import { patchStudentSchema } from '../validation/patchStudentSchema.js';
+import { isValidId } from '../middlewares/isValidId.js';
 
 const router = Router();
 
 export default router;
 
+router.use('/students/:studentId', isValidId);
+
 router.get('/students', ctrlWrapper(getStudentsController));
 
-router.get(
-  '/students/:studentId',
-  isValid,
-  ctrlWrapper(getStudentByIdController),
-);
+router.get('/students/:studentId', ctrlWrapper(getStudentByIdController));
 
 router.post(
   '/students',
@@ -38,12 +34,12 @@ router.delete('/students/:studentId', ctrlWrapper(deleteStudentController));
 
 router.put(
   '/students/:studentId',
-  validateBody(updateStudentSchema),
+  validateBody(createStudentSchema),
   ctrlWrapper(upsertStudentController),
 );
 
 router.patch(
   '/students/:studentId',
-  validateBody(updateStudentSchema),
+  validateBody(patchStudentSchema),
   ctrlWrapper(patchSrudentController),
 );

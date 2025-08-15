@@ -1,11 +1,10 @@
 import createHttpError from 'http-errors';
 import { isValidObjectId } from 'mongoose';
 
-export const isValid = (req, res, next) => {
+export const isValidId = (req, res, next) => {
   const { studentId } = req.params;
   if (!isValidObjectId(studentId)) {
-    throw createHttpError(400, 'Bed request');
+    throw createHttpError(400, `Invalid objectId in path ${studentId}`);
   }
-
   next();
 };
