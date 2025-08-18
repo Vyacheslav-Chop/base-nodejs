@@ -14,32 +14,34 @@ import { createStudentSchema } from '../validation/createStudentSchema.js';
 import { patchStudentSchema } from '../validation/patchStudentSchema.js';
 import { isValidId } from '../middlewares/isValidId.js';
 
-const router = Router();
 
-export default router;
+const studentsRouter = Router();
 
-router.use('/students/:studentId', isValidId);
+export default studentsRouter;
 
-router.get('/students', ctrlWrapper(getStudentsController));
 
-router.get('/students/:studentId', ctrlWrapper(getStudentByIdController));
+studentsRouter.use('/:studentId', isValidId);
 
-router.post(
-  '/students',
+studentsRouter.get('/', ctrlWrapper(getStudentsController));
+
+studentsRouter.get('/:studentId', ctrlWrapper(getStudentByIdController));
+
+studentsRouter.post(
+  '/',
   validateBody(createStudentSchema),
   ctrlWrapper(createStudentController),
 );
 
-router.delete('/students/:studentId', ctrlWrapper(deleteStudentController));
+studentsRouter.delete('/:studentId', ctrlWrapper(deleteStudentController));
 
-router.put(
-  '/students/:studentId',
+studentsRouter.put(
+  '/:studentId',
   validateBody(createStudentSchema),
   ctrlWrapper(upsertStudentController),
 );
 
-router.patch(
-  '/students/:studentId',
+studentsRouter.patch(
+  '/:studentId',
   validateBody(patchStudentSchema),
   ctrlWrapper(patchSrudentController),
 );
